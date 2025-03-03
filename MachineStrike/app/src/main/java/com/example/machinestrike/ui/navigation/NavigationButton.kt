@@ -1,4 +1,4 @@
-package com.example.machinestrike.ui.Navigation
+package com.example.machinestrike.ui.navigation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.CutCornerShape

@@ -1,10 +1,11 @@
-package com.example.machinestrike.ui.multiplayer
+package com.example.machinestrike.ui.difficulty
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,13 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.machinestrike.ui.difficulty.DifficultySelection
-import com.example.machinestrike.ui.homescreen.HomeScreen
+import com.example.machinestrike.Destinations
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
+import com.example.machinestrike.ui.navigation.NavigationButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MultiplayerScreen(
+fun DifficultyScreen(
     navController: NavController,
 ){
     Scaffold (
@@ -34,7 +35,7 @@ fun MultiplayerScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("Multiplayer")
+                    Text("Select Difficulty")
                 }
             )
         },
@@ -45,27 +46,56 @@ fun MultiplayerScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            Text("Coming Soon!")
-            //TODO
-
-            //Room code input box
-            //Search button
-
+            DifficultySelection(navController)
             Spacer(modifier = Modifier.height(40.dp))
 
         }
     }
 }
 
+@Composable
+fun DifficultySelection (
+    navController: NavController,
+){
+
+    //navigation all goes to next page..
+    //save selection
+
+    Column {
+        NavigationButton(
+            onClick = { navController.navigate(Destinations.BOARDSELECT) },
+            text = "Easy",
+            modifier = Modifier.size(240.dp, 60.dp)
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        NavigationButton(
+            onClick = { navController.navigate(Destinations.BOARDSELECT) },
+            text = "Medium",
+            modifier = Modifier.size(240.dp, 60.dp)
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        NavigationButton(
+            onClick = { navController.navigate(Destinations.BOARDSELECT) },
+            text = "Hard",
+            modifier = Modifier.size(240.dp, 60.dp)
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        NavigationButton(
+            onClick = { navController.navigate(Destinations.BOARDSELECT) },
+            text = "Expert",
+            modifier = Modifier.size(240.dp, 60.dp)
+        )
+    }
+}
 
 
 
 @Preview
 @Composable
-fun PreviewMultiplayerScreen(){
+fun PreviewDifficultyScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            MultiplayerScreen(navController = rememberNavController())
+            DifficultyScreen(navController = rememberNavController())
         }
     }
 }

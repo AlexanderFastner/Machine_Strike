@@ -37,11 +37,13 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 }
 
 dependencies {
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation(libs.androidx.room.runtime)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)

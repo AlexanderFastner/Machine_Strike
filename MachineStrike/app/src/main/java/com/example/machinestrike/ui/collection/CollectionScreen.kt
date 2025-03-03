@@ -1,10 +1,11 @@
-package com.example.machinestrike.ui.multiplayer
+package com.example.machinestrike.ui.collection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,13 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.machinestrike.ui.difficulty.DifficultySelection
-import com.example.machinestrike.ui.homescreen.HomeScreen
+import com.example.machinestrike.Destinations
+import com.example.machinestrike.ui.navigation.NavigationButton
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MultiplayerScreen(
+fun CollectionScreen(
     navController: NavController,
 ){
     Scaffold (
@@ -34,7 +36,7 @@ fun MultiplayerScreen(
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("Multiplayer")
+                    Text("Your Collection")
                 }
             )
         },
@@ -45,27 +47,36 @@ fun MultiplayerScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            Text("Coming Soon!")
-            //TODO
-
-            //Room code input box
-            //Search button
-
-            Spacer(modifier = Modifier.height(40.dp))
+            CollectionList(navController)
 
         }
     }
 }
 
+@Composable
+fun CollectionList (
+    navController: NavController,
+){
+
+    //Collection of all pieces
+    //selectors for unlocked, not unlocked
+    //icons to sort by types
+    //board to show movements
+
+    Column {
+        Text("COMING SOON")
+        //TODO
+    }
+}
 
 
 
 @Preview
 @Composable
-fun PreviewMultiplayerScreen(){
+fun PreviewCollectionScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            MultiplayerScreen(navController = rememberNavController())
+            CollectionScreen(navController = rememberNavController())
         }
     }
 }
