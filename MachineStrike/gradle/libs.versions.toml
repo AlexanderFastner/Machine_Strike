@@ -1,5 +1,8 @@
 [versions]
 agp = "8.8.0"
+graphicsShape = "1.0.0-alpha03"
+graphicsShapes = "1.0.1"
+khexgrid = "0.1.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -13,6 +16,8 @@ roomGradlePlugin = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-graphics-shape = { module = "androidx.graphics:graphics-shape", version.ref = "graphicsShape" }
+androidx-graphics-shapes = { module = "androidx.graphics:graphics-shapes", version.ref = "graphicsShapes" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "roomGradlePlugin" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomGradlePlugin" }
@@ -29,6 +34,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+khexgrid = { module = "com.github.dmccabe:khexgrid", version.ref = "khexgrid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

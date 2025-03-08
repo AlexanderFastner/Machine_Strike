@@ -3,6 +3,7 @@ package com.example.machinestrike.ui.homescreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
+import com.example.machinestrike.data.StandardBoard
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 import com.example.machinestrike.ui.navigation.NavigationButton
 
@@ -62,7 +64,9 @@ fun HomeScreen(
 fun OptionsList(
     navController: NavController,
 ){
-    Column {
+    Column () {
+        Spacer(modifier = Modifier.height(200.dp))
+
         NavigationButton(
             onClick = { navController.navigate(Destinations.DIFFICULTY) },
             text = "Quick Play",
@@ -76,16 +80,18 @@ fun OptionsList(
         )
         Spacer(modifier = Modifier.height(40.dp))
         NavigationButton(
+            onClick = { navController.navigate(Destinations.COLLECTION) },
+            text = "Collection",
+            modifier = Modifier.size(240.dp, 60.dp)
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        NavigationButton(
             onClick = { navController.navigate(Destinations.SETTINGS) },
             text = "Settings",
             modifier = Modifier.size(240.dp, 60.dp)
         )
         Spacer(modifier = Modifier.height(40.dp))
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.COLLECTION) },
-            text = "Collection",
-            modifier = Modifier.size(240.dp, 60.dp)
-        )
+
     }
 }
 

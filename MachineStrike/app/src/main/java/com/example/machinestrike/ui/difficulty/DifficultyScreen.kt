@@ -58,8 +58,7 @@ fun DifficultySelection (
     navController: NavController,
 ){
 
-    //navigation all goes to next page..
-    //save selection
+    //save selection ... somewhere
 
     Column {
         NavigationButton(

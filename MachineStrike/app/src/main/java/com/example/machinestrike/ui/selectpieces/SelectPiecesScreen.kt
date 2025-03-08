@@ -61,6 +61,11 @@ fun PieceSelection (
         Text("Placeholder for coming pieces")
         //TODO
         //lazy list or grid or column of some kind
+        //make cards for the pieces
+        //make collection of pieces
+        //only choose up to 9? X points
+        //navigate on to GameScreen and start game
+        //remember lifecycle of app and background processes
     }
 }
 
