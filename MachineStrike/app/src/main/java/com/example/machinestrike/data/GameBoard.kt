@@ -40,8 +40,8 @@ val StandardBoard = listOf(
     4,4,4,4,4,4,4,4,
     3,3,3,3,3,3,3,3,
     2,2,2,2,2,2,2,2,
-    2,2,2,2,2,2,2,2,
-    2,2,2,2,2,2,2,2,
+    2,4,5,2,2,5,4,2,
+    2,5,4,2,2,4,5,2,
     2,2,2,2,2,2,2,2,
     3,3,3,3,3,3,3,3,
     4,4,4,4,4,4,4,4
@@ -58,18 +58,16 @@ val DefaultBoard1 = listOf(
     2,2,3,2,3,2,2,2
 )
 
-
-//TODO add a way to make a random board
+val RandomBoard = createRandomBaord()
+fun createRandomBaord(): List<Int> {
+    return Array(8) { IntArray(8) { (1..5).random() } }.flatMap { it.toList() }
+}
 
 //TODO add a way for the player to draw a custom board
 
 //TODO maybe add this to the viewModel?
 
 //TODO make a way to have a bigger or smaller board
-
-
-//TODO change to list of ints 0-5 for various heights
-//when ... 1-> corrupt, 2 ->... etc
 
 @Composable
 fun GameBoard(
@@ -181,6 +179,24 @@ fun PreviewDefaultBoardGameScreen() {
         GameBoard(
             selectedTilesList = selectedTiles.value,
             heights = DefaultBoard1,
+            onClick = { row, column ->
+                // Handle tile click here
+                selectedTiles.value = selectedTiles.value + setOf(Pair(row, column))
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewRandomBoardGameScreen() {
+    MachineStrikeTheme {
+        val selectedTiles = remember { mutableStateOf(setOf(
+            Pair(-1,-1)
+        )) }
+        GameBoard(
+            selectedTilesList = selectedTiles.value,
+            heights = RandomBoard,
             onClick = { row, column ->
                 // Handle tile click here
                 selectedTiles.value = selectedTiles.value + setOf(Pair(row, column))

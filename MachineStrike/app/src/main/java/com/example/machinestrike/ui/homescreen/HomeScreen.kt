@@ -3,7 +3,6 @@ package com.example.machinestrike.ui.homescreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,7 +20,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
-import com.example.machinestrike.data.StandardBoard
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 import com.example.machinestrike.ui.navigation.NavigationButton
 
@@ -30,6 +28,8 @@ import com.example.machinestrike.ui.navigation.NavigationButton
 @Composable
 fun HomeScreen(
     navController: NavHostController,
+    options: List<String>,
+    modifier: Modifier,
 ){
     //header
     //graphic..
@@ -48,13 +48,13 @@ fun HomeScreen(
         },
     ){ innerPadding ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-            OptionsList(navController)
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = modifier.height(40.dp))
+            OptionsList(navController, modifier)
+            Spacer(modifier = modifier.height(40.dp))
 
         }
     }
@@ -63,34 +63,35 @@ fun HomeScreen(
 @Composable
 fun OptionsList(
     navController: NavController,
+    modifier: Modifier,
 ){
     Column () {
-        Spacer(modifier = Modifier.height(200.dp))
+        Spacer(modifier = modifier.height(200.dp))
 
         NavigationButton(
             onClick = { navController.navigate(Destinations.DIFFICULTY) },
             text = "Quick Play",
-            modifier = Modifier.size(240.dp, 60.dp)
+            modifier = modifier.size(240.dp, 60.dp)
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = modifier.height(40.dp))
         NavigationButton(
             onClick = { navController.navigate(Destinations.MULTIPLAYER) },
             text = "Multiplayer",
-            modifier = Modifier.size(240.dp, 60.dp)
+            modifier = modifier.size(240.dp, 60.dp)
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = modifier.height(40.dp))
         NavigationButton(
             onClick = { navController.navigate(Destinations.COLLECTION) },
             text = "Collection",
-            modifier = Modifier.size(240.dp, 60.dp)
+            modifier = modifier.size(240.dp, 60.dp)
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = modifier.height(40.dp))
         NavigationButton(
             onClick = { navController.navigate(Destinations.SETTINGS) },
             text = "Settings",
-            modifier = Modifier.size(240.dp, 60.dp)
+            modifier = modifier.size(240.dp, 60.dp)
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = modifier.height(40.dp))
 
     }
 }
@@ -102,7 +103,7 @@ fun OptionsList(
 fun PreviewHomeScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            HomeScreen(navController = rememberNavController())
+            HomeScreen(navController = rememberNavController(), modifier = Modifier)
         }
     }
 }
