@@ -1,8 +1,12 @@
 package com.example.machinestrike.ui.difficulty
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
+import com.example.machinestrike.data.DataSource
+import com.example.machinestrike.data.NavigationOption
 import com.example.machinestrike.ui.MachineStrikeViewModel
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 import com.example.machinestrike.ui.navigation.NavigationButton
@@ -28,18 +35,23 @@ import com.example.machinestrike.ui.navigation.NavigationButton
 @Composable
 fun DifficultyScreen(
     navController: NavController,
+    options: List<NavigationOption>,
+    modifier: Modifier = Modifier,
 ){
     Scaffold (
         topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Select Difficulty")
-                }
-            )
+            Box(
+                modifier = Modifier
+                    .height(40.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Select Difficulty",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         },
     ){ innerPadding ->
         Column(
@@ -47,10 +59,7 @@ fun DifficultyScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-            DifficultySelection(navController)
-            Spacer(modifier = Modifier.height(40.dp))
-
+            DifficultySelection(navController, options, modifier)
         }
     }
 }
@@ -58,45 +67,36 @@ fun DifficultyScreen(
 @Composable
 fun DifficultySelection (
     navController: NavController,
+    options: List<NavigationOption>,
+    modifier: Modifier = Modifier,
 ){
-
-    //save selection ... somewhere
+    //TODO save selection ... somewhere
 
     Column {
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.BOARDSELECT) },
-            text = "Easy",
-            modifier = Modifier.size(240.dp, 60.dp)
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.BOARDSELECT) },
-            text = "Medium",
-            modifier = Modifier.size(240.dp, 60.dp)
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.BOARDSELECT) },
-            text = "Hard",
-            modifier = Modifier.size(240.dp, 60.dp)
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.BOARDSELECT) },
-            text = "Expert",
-            modifier = Modifier.size(240.dp, 60.dp)
-        )
+        Spacer(modifier = modifier.height(200.dp))
+        options.forEach { item ->
+            NavigationButton(
+                onClick = {
+                    navController.navigate(item.destination)
+
+                    Log.d("Button clicked", item.label)
+                          },
+                text = item.label,
+                modifier = Modifier.size(240.dp, 60.dp)
+            )
+            Spacer(modifier = modifier.height(40.dp))
+        }
     }
 }
-
-
 
 @Preview
 @Composable
 fun PreviewDifficultyScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            DifficultyScreen(navController = rememberNavController())
+            DifficultyScreen(navController = rememberNavController(),
+                options = DataSource.difficultyScreenOptions,
+                modifier = Modifier)
         }
     }
 }

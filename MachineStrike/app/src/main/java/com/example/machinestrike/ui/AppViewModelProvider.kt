@@ -9,10 +9,12 @@ import com.example.machinestrike.MachineStrikeApplication
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            MachineStrikeViewModel(MachineStrikeApplication().container.gameRepository)
+//            val app = (this[AndroidViewModelFactory.APPLICATION_KEY] as MachineStrikeApplication)
+//            MachineStrikeViewModel(app.container.gameRepository)
+            MachineStrikeViewModel()
         }
     }
 }
 
-fun CreationExtras.MachineStrikeApplication(): MachineStrikeApplication =
-    (this[AndroidViewModelFactory.APPLICATION_KEY] as MachineStrikeApplication)
+//fun CreationExtras.MachineStrikeApplication(): MachineStrikeApplication? =
+//    (this[AndroidViewModelFactory.APPLICATION_KEY] as? MachineStrikeApplication)

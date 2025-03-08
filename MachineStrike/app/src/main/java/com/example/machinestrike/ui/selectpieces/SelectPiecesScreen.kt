@@ -1,8 +1,13 @@
 package com.example.machinestrike.ui.selectpieces
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,12 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
+import com.example.machinestrike.data.DataSource
+import com.example.machinestrike.data.NavigationOption
+import com.example.machinestrike.data.SelectionButtons
 import com.example.machinestrike.ui.navigation.NavigationButton
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 
@@ -26,36 +35,63 @@ import com.example.machinestrike.ui.theme.MachineStrikeTheme
 @Composable
 fun SelectPiecesScreen(
     navController: NavController,
+    navigationOptions: List<NavigationOption>,
+    modifier: Modifier = Modifier,
 ){
     Scaffold (
         topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Select Pieces")
-                }
-            )
+            Box(
+                modifier = Modifier
+                    .height(40.dp) // Adjust the height as needed
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Select Pieces",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         },
     ){ innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-            PieceSelection(navController)
-            Spacer(modifier = Modifier.height(40.dp))
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                PieceSelection(
+                    modifier = modifier
+                )
+                Spacer(modifier = Modifier.height(40.dp))
 
+
+            }
+
+            //TODO ONLY LET USER CLICK NEXT IF AT LEAST 1 PIECE IS SELECTED
+
+            navigationOptions.forEach { item ->
+                NavigationButton(
+                    onClick = {
+                        navController.navigate(item.destination)
+                        Log.d("Button clicked", item.label)
+                    },
+                    text = item.label,
+                    modifier = Modifier
+                        .size(160.dp, 60.dp)
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 8.dp, bottom = 8.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun PieceSelection (
-    navController: NavController,
+    modifier: Modifier = Modifier,
 ){
     Column {
         Text("Placeholder for coming pieces")
@@ -76,7 +112,11 @@ fun PieceSelection (
 fun PreviewSelectPiecesScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            SelectPiecesScreen(navController = rememberNavController())
+            SelectPiecesScreen(
+                navController = rememberNavController(),
+                navigationOptions = DataSource.PieceSelectScreenNext,
+                modifier = Modifier
+            )
         }
     }
 }

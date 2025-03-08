@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.ui.homescreen.HomeScreen
 import androidx.navigation.compose.NavHost
+import com.example.machinestrike.data.DataSource
 import com.example.machinestrike.ui.MachineStrikeViewModel
 import com.example.machinestrike.ui.collection.CollectionScreen
 import com.example.machinestrike.ui.difficulty.DifficultyScreen
@@ -40,6 +41,7 @@ fun MachineStrikeScreen(
     Scaffold(
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
+        //TODO pass in uiState
 
         NavHost(
             navController = navController,
@@ -47,14 +49,11 @@ fun MachineStrikeScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
 
-            //TODO
-            //pass is the on button clicked behavior to change uiState
-
             composable(route = Destinations.HOME) {
                 HomeScreen(
                     navController,
+                    options = DataSource.homeScreenOptions,
                     modifier = Modifier
-                        .fillMaxSize()
                 )
             }
 
@@ -64,11 +63,30 @@ fun MachineStrikeScreen(
 
             composable(Destinations.COLLECTION) { CollectionScreen(navController) }
 
-            composable(Destinations.DIFFICULTY) { DifficultyScreen(navController) }
+            composable(route = Destinations.DIFFICULTY) {
+                DifficultyScreen(
+                    navController,
+                    options = DataSource.difficultyScreenOptions,
+                    modifier = Modifier
+                )
+            }
 
-            composable(Destinations.BOARDSELECT) { SelectBoardScreen(navController) }
+            composable(Destinations.BOARDSELECT) {
+                SelectBoardScreen(
+                    navController,
+                    options = DataSource.selectBoardScreenOptions,
+                    navigationOptions = DataSource.BoardSelectSceenNext,
+                    modifier = Modifier
+                )
+            }
 
-            composable(Destinations.BOARDSELECT) { SelectPiecesScreen(navController) }
+            composable(Destinations.PIECESELECT) {
+                SelectPiecesScreen(
+                    navController,
+                    navigationOptions = DataSource.PieceSelectScreenNext,
+                    modifier = Modifier
+                )
+            }
         }
     }
 }

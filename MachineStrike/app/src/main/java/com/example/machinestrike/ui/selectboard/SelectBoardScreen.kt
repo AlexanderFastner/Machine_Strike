@@ -1,10 +1,13 @@
 package com.example.machinestrike.ui.selectboard
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
+import com.example.machinestrike.data.DataSource
+import com.example.machinestrike.data.NavigationOption
+import com.example.machinestrike.data.SelectionButtons
 import com.example.machinestrike.ui.navigation.NavigationButton
 import com.example.machinestrike.ui.navigation.SelectionButton
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
@@ -30,30 +36,39 @@ import com.example.machinestrike.ui.theme.MachineStrikeTheme
 @Composable
 fun SelectBoardScreen(
     navController: NavController,
+    options: List<SelectionButtons>,
+    navigationOptions: List<NavigationOption>,
+    modifier: Modifier = Modifier,
 ){
     Scaffold (
         topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Select Board")
-                }
-            )
+            Box(
+                modifier = Modifier
+                    .height(40.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Select Board",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         },
     ){ innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding),
         ) {
-            BoardSelection(navController)
-
             //TODO
             //add image of selected board
-            //and next button? check mark?
-            //Center options
+
+            BoardSelection(
+                navController,
+                options,
+                navigationOptions,
+                modifier
+            )
         }
     }
 }
@@ -61,6 +76,9 @@ fun SelectBoardScreen(
 @Composable
 fun BoardSelection (
     navController: NavController,
+    options: List<SelectionButtons>,
+    navigationOptions: List<NavigationOption>,
+    modifier: Modifier = Modifier,
 ){
     Box(
         modifier = Modifier.fillMaxSize()
@@ -69,61 +87,57 @@ fun BoardSelection (
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier.height(200.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             //TODO switch all these to just change the image being shown above
             //TODO add viewmodel for these buttons to send data to
             //TODO change gameRepository settings
             //also need to add this for difficulty + piece selection
 
+
+            //TODO MAKE THE SELECTED OPTION HIGHLIGHT!
+            Spacer(modifier = Modifier.height(150.dp))
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SelectionButton(
-                    onClick = { navController.navigate(Destinations.PIECESELECT) },
-                    text = "Standard",
-                    modifier = Modifier.size(240.dp, 60.dp)
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-                //BASIC means randomized starter board
-                SelectionButton(
-                    onClick = { navController.navigate(Destinations.PIECESELECT) },
-                    text = "Basic",
-                    modifier = Modifier.size(240.dp, 60.dp)
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-                SelectionButton(
-                    onClick = { navController.navigate(Destinations.PIECESELECT) },
-                    text = "Asymmetric",
-                    modifier = Modifier.size(240.dp, 60.dp)
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-                SelectionButton(
-                    onClick = { navController.navigate(Destinations.PIECESELECT) },
-                    text = "Custom",
-                    modifier = Modifier.size(240.dp, 60.dp)
-                )
+                options.forEach { item ->
+                    NavigationButton(
+                        onClick = {
+                            //TODO MAKE THIS ADD TO UI STATE
+                            Log.d("Button clicked", item.label)},
+                        text = item.label,
+                        modifier = Modifier.size(240.dp, 60.dp)
+                    )
+                    Spacer(modifier = modifier.height(40.dp))
+                }
             }
         }
-        NavigationButton(
-            onClick = { navController.navigate(Destinations.PIECESELECT) },
-            text = "Next",
-            modifier = Modifier
-                .size(160.dp, 60.dp)
-                .align(Alignment.BottomEnd)
-                .padding(end = 8.dp, bottom = 8.dp)
-        )
+        navigationOptions.forEach { item ->
+            NavigationButton(
+                onClick = {
+                    navController.navigate(item.destination)
+                    Log.d("Button clicked", item.label)},
+                text = item.label,
+                modifier = Modifier
+                    .size(160.dp, 60.dp)
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 8.dp, bottom = 8.dp)
+            )
+        }
     }
 }
-
-
 
 @Preview
 @Composable
 fun PreviewSelectBoardScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            SelectBoardScreen(navController = rememberNavController())
+            SelectBoardScreen(
+                navController = rememberNavController(),
+                options = DataSource.selectBoardScreenOptions,
+                navigationOptions = DataSource.BoardSelectSceenNext,
+                modifier = Modifier
+            )
         }
     }
 }

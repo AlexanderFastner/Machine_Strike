@@ -8,9 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class MachineStrikeViewModel (private val gameRepository: GameRepository): ViewModel() {
+//class MachineStrikeViewModel (val gameRepository: GameRepository): ViewModel() {
+class MachineStrikeViewModel (): ViewModel() {
 
-    //uistate
+    //uiState
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
