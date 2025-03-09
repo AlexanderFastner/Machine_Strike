@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -29,12 +31,13 @@ import com.example.machinestrike.data.DataSource
 import com.example.machinestrike.data.NavigationOption
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 import com.example.machinestrike.ui.navigation.NavigationButton
-
+import com.example.machinestrike.ui.MachineStrikeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
     options: List<NavigationOption>,
     modifier: Modifier,
 ){
@@ -62,7 +65,7 @@ fun HomeScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            OptionsList(navController, options, modifier)
+            OptionsList(navController, backStackEntry,  options, modifier)
         }
     }
 }
@@ -70,14 +73,18 @@ fun HomeScreen(
 @Composable
 fun OptionsList(
     navController: NavController,
+    backStackEntry: NavBackStackEntry,
     options: List<NavigationOption>,
     modifier: Modifier = Modifier,
 ){
+    val viewModel: MachineStrikeViewModel = viewModel(backStackEntry)
+
     Column {
         Spacer(modifier = modifier.height(200.dp))
         options.forEach { item ->
             NavigationButton(
                 onClick = {
+                    viewModel.setGamemode("Quick Play")
                     navController.navigate(item.destination)
                     Log.d("Button clicked", item.label)},
                 text = item.label,
@@ -95,6 +102,7 @@ fun PreviewHomeScreen(){
         MachineStrikeTheme {
             HomeScreen(
                 navController = rememberNavController(),
+                backStackEntry = null,
                 options = DataSource.homeScreenOptions,
                 modifier = Modifier
             )

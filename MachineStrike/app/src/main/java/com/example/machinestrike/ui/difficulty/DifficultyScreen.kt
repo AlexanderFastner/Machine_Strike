@@ -36,6 +36,7 @@ import com.example.machinestrike.ui.navigation.NavigationButton
 fun DifficultyScreen(
     navController: NavController,
     options: List<NavigationOption>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ){
     Scaffold (
@@ -59,7 +60,7 @@ fun DifficultyScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            DifficultySelection(navController, options, modifier)
+            DifficultySelection(navController, options, onClick, modifier)
         }
     }
 }
@@ -68,19 +69,18 @@ fun DifficultyScreen(
 fun DifficultySelection (
     navController: NavController,
     options: List<NavigationOption>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ){
-    //TODO save selection ... somewhere
-
     Column {
         Spacer(modifier = modifier.height(200.dp))
         options.forEach { item ->
             NavigationButton(
                 onClick = {
+//                    viewModel.setGamemode(item.label)
                     navController.navigate(item.destination)
-
                     Log.d("Button clicked", item.label)
-                          },
+                },
                 text = item.label,
                 modifier = Modifier.size(240.dp, 60.dp)
             )
@@ -96,6 +96,7 @@ fun PreviewDifficultyScreen(){
         MachineStrikeTheme {
             DifficultyScreen(navController = rememberNavController(),
                 options = DataSource.difficultyScreenOptions,
+                onClick =  { },
                 modifier = Modifier)
         }
     }

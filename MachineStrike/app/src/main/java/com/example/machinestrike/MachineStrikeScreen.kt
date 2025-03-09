@@ -1,11 +1,13 @@
 package com.example.machinestrike
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -49,9 +51,13 @@ fun MachineStrikeScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
 
-            composable(route = Destinations.HOME) {
+            composable(route = Destinations.HOME) { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry("parentNavigationRoute")
+                }
                 HomeScreen(
                     navController,
+                    backStackEntry = backStackEntry,
                     options = DataSource.homeScreenOptions,
                     modifier = Modifier
                 )
@@ -67,6 +73,9 @@ fun MachineStrikeScreen(
                 DifficultyScreen(
                     navController,
                     options = DataSource.difficultyScreenOptions,
+                    onClick = {
+
+                     },
                     modifier = Modifier
                 )
             }
