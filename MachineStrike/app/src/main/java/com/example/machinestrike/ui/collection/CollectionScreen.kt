@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
+import com.example.machinestrike.data.Pieces.Burrower
+import com.example.machinestrike.data.Pieces.Piece
 import com.example.machinestrike.ui.navigation.NavigationButton
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 

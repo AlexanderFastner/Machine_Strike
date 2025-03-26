@@ -3,6 +3,7 @@ package com.example.machinestrike.data.Pieces
 import java.lang.Boolean.FALSE
 
 class Scrapper(
+    override var name: String = "Scrapper",
     override var health: Int = 5,
     override var baseDamage: Int = 2,
     override var attackRange: Int = 2,
@@ -12,9 +13,11 @@ class Scrapper(
     override var victoryPoints: Int = 2,
     override var skill: MachineSkill = MachineSkill.NONE,
     override var rarity: Rarity = Rarity.COMMON,
+    override var machineType: MachineType = MachineType.GUNNER,
 
     override var placed: Boolean = FALSE,
-) : Piece {
+
+    ) : Piece {
 
 
 }

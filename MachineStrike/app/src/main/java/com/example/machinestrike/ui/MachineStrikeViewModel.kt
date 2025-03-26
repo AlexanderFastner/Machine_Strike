@@ -23,12 +23,26 @@ class MachineStrikeViewModel (): ViewModel() {
         }
     }
 
-    fun setDifficulty(difficultyLevel: Int) {
+    fun setDifficulty(difficultyLevel: String) {
         _uiState.update { currentState ->
             currentState.copy(
                 difficulty = difficultyLevel
             )
         }
     }
+
+    fun setBoard(selectedBoard: String){
+
+        //TODO have this function take in a string and set the actual board off of that?
+        _uiState.update { currentState ->
+            currentState.copy(
+                board = selectedBoard
+            )
+        }
+
+    }
+
+
+
 
 }

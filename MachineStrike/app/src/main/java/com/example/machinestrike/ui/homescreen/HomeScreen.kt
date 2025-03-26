@@ -37,9 +37,10 @@ import com.example.machinestrike.ui.MachineStrikeViewModel
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    backStackEntry: NavBackStackEntry,
+//    backStackEntry: NavBackStackEntry?,
     options: List<NavigationOption>,
     modifier: Modifier,
+    viewModel: MachineStrikeViewModel?,
 ){
     //header
     //graphic..
@@ -65,7 +66,12 @@ fun HomeScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            OptionsList(navController, backStackEntry,  options, modifier)
+            if (viewModel != null) {
+                OptionsList(navController, options, modifier, viewModel)
+            }
+            else{
+                DummyOptionsList(navController, options, modifier)
+            }
         }
     }
 }
@@ -73,18 +79,41 @@ fun HomeScreen(
 @Composable
 fun OptionsList(
     navController: NavController,
-    backStackEntry: NavBackStackEntry,
+//    backStackEntry: NavBackStackEntry,
+    options: List<NavigationOption>,
+    modifier: Modifier = Modifier,
+    viewModel: MachineStrikeViewModel
+){
+    Column {
+        Spacer(modifier = modifier.height(200.dp))
+        options.forEach { item ->
+            NavigationButton(
+                onClick = {
+                    viewModel.setGamemode(item.label)
+                    val currentGameMode = viewModel.uiState.value.gameType
+                    Log.d("set gamemode", currentGameMode)
+                    navController.navigate(item.destination)
+                    Log.d("Button clicked", item.label)},
+                text = item.label,
+                modifier = modifier.size(240.dp, 60.dp)
+            )
+            Spacer(modifier = modifier.height(40.dp))
+        }
+    }
+}
+
+@Composable
+fun DummyOptionsList(
+    navController: NavController,
     options: List<NavigationOption>,
     modifier: Modifier = Modifier,
 ){
-    val viewModel: MachineStrikeViewModel = viewModel(backStackEntry)
 
     Column {
         Spacer(modifier = modifier.height(200.dp))
         options.forEach { item ->
             NavigationButton(
                 onClick = {
-                    viewModel.setGamemode("Quick Play")
                     navController.navigate(item.destination)
                     Log.d("Button clicked", item.label)},
                 text = item.label,
@@ -102,9 +131,10 @@ fun PreviewHomeScreen(){
         MachineStrikeTheme {
             HomeScreen(
                 navController = rememberNavController(),
-                backStackEntry = null,
+//                backStackEntry = null,
                 options = DataSource.homeScreenOptions,
-                modifier = Modifier
+                modifier = Modifier,
+                viewModel = null,
             )
         }
     }

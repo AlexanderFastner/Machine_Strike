@@ -1,15 +1,15 @@
 package com.example.machinestrike.data
 
 import com.example.machinestrike.data.GameBoard
+import com.example.machinestrike.data.Pieces.Piece
 
 data class GameUiState (
 
     val gameType: String = "",
-    val difficulty: Int = 0,
+    val difficulty: String = "",
 
     //TODO pass in gameboard somehow
-//    val board: GameBoard,
-    //TODO make piece class
-//    val pieces: List<String> = listOf(),
+    val board:  String = "",
+    val pieces: List<Piece> = listOf(),
     //val pickupOptions: List<String> = listOf()
     )

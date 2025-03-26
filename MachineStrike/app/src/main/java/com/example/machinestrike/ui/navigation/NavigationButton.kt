@@ -10,6 +10,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.machinestrike.ui.theme.Purple40
+import com.example.machinestrike.ui.theme.LightGreen
+import com.example.machinestrike.ui.theme.MiddleGreen
+import com.example.machinestrike.ui.theme.DarkGreen
+
+
+@Composable
+fun NavigationButtonGroup(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        onClick = onClick,
+        shape = CutCornerShape(25),
+        colors = if (selected) {
+            ButtonDefaults.buttonColors(
+                containerColor = LightGreen,
+                contentColor = Color.Black
+            )
+            }else{
+            ButtonDefaults.buttonColors(
+                containerColor = DarkGreen,
+                contentColor = Color.White
+            )
+        },
+        border = BorderStroke(2.dp, Purple40),
+        modifier = modifier
+    ) {
+        Text(text = text)
+    }
+}
 
 @Composable
 fun NavigationButton(
@@ -21,9 +53,9 @@ fun NavigationButton(
         onClick = onClick,
         shape = CutCornerShape(25),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black,
-            contentColor = Color.White
-        ),
+                containerColor = LightGreen,
+                contentColor = Color.Black
+            ),
         border = BorderStroke(2.dp, Purple40),
         modifier = modifier
     ) {

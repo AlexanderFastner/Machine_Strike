@@ -43,7 +43,9 @@ fun MachineStrikeScreen(
     Scaffold(
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
+        val viewModel: MachineStrikeViewModel = viewModel()
         //TODO pass in uiState
+
 
         NavHost(
             navController = navController,
@@ -52,14 +54,12 @@ fun MachineStrikeScreen(
         ) {
 
             composable(route = Destinations.HOME) { backStackEntry ->
-                val parentEntry = remember(backStackEntry) {
-                    navController.getBackStackEntry("parentNavigationRoute")
-                }
                 HomeScreen(
                     navController,
-                    backStackEntry = backStackEntry,
+//                    backStackEntry = backStackEntry,
                     options = DataSource.homeScreenOptions,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    viewModel = viewModel,
                 )
             }
 
@@ -69,14 +69,14 @@ fun MachineStrikeScreen(
 
             composable(Destinations.COLLECTION) { CollectionScreen(navController) }
 
-            composable(route = Destinations.DIFFICULTY) {
+            composable(route = Destinations.DIFFICULTY) {backStackEntry ->
+
                 DifficultyScreen(
                     navController,
                     options = DataSource.difficultyScreenOptions,
-                    onClick = {
-
-                     },
-                    modifier = Modifier
+//                    backStackEntry = backStackEntry,
+                    modifier = Modifier,
+                    viewModel = viewModel,
                 )
             }
 
@@ -85,7 +85,8 @@ fun MachineStrikeScreen(
                     navController,
                     options = DataSource.selectBoardScreenOptions,
                     navigationOptions = DataSource.BoardSelectSceenNext,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    viewModel = viewModel,
                 )
             }
 
@@ -93,7 +94,8 @@ fun MachineStrikeScreen(
                 SelectPiecesScreen(
                     navController,
                     navigationOptions = DataSource.PieceSelectScreenNext,
-                    modifier = Modifier
+                    modifier = Modifier,
+//                    viewModel = viewModel,
                 )
             }
         }

@@ -22,12 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
 import com.example.machinestrike.data.DataSource
 import com.example.machinestrike.data.NavigationOption
 import com.example.machinestrike.ui.MachineStrikeViewModel
+import com.example.machinestrike.ui.homescreen.DummyOptionsList
+import com.example.machinestrike.ui.homescreen.OptionsList
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
 import com.example.machinestrike.ui.navigation.NavigationButton
 
@@ -36,8 +39,9 @@ import com.example.machinestrike.ui.navigation.NavigationButton
 fun DifficultyScreen(
     navController: NavController,
     options: List<NavigationOption>,
-    onClick: () -> Unit,
+//    backStackEntry: NavBackStackEntry?,
     modifier: Modifier = Modifier,
+    viewModel: MachineStrikeViewModel?
 ){
     Scaffold (
         topBar = {
@@ -60,7 +64,13 @@ fun DifficultyScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            DifficultySelection(navController, options, onClick, modifier)
+            if (viewModel != null) {
+                DifficultySelection(navController, options, modifier, viewModel)
+
+            }
+            else{
+                DummyDifficultySelection(navController, options, modifier)
+            }
         }
     }
 }
@@ -69,15 +79,19 @@ fun DifficultyScreen(
 fun DifficultySelection (
     navController: NavController,
     options: List<NavigationOption>,
-    onClick: () -> Unit,
+//    backStackEntry: NavBackStackEntry,
     modifier: Modifier = Modifier,
+    viewModel: MachineStrikeViewModel
 ){
     Column {
         Spacer(modifier = modifier.height(200.dp))
         options.forEach { item ->
             NavigationButton(
                 onClick = {
-//                    viewModel.setGamemode(item.label)
+                    viewModel.setDifficulty(item.label)
+                    val currentDifficulty = viewModel.uiState.value.difficulty
+                    Log.d("set difficulty", currentDifficulty)
+//                    Log.d("get gamemode in difficulty", viewModel.uiState.value.gameType)
                     navController.navigate(item.destination)
                     Log.d("Button clicked", item.label)
                 },
@@ -89,15 +103,41 @@ fun DifficultySelection (
     }
 }
 
+@Composable
+fun DummyDifficultySelection (
+    navController: NavController,
+    options: List<NavigationOption>,
+    modifier: Modifier = Modifier,
+){
+    Column {
+        Spacer(modifier = modifier.height(200.dp))
+        options.forEach { item ->
+            NavigationButton(
+                onClick = {
+                    navController.navigate(item.destination)
+                    Log.d("Button clicked", item.label)
+                },
+                text = item.label,
+                modifier = Modifier.size(240.dp, 60.dp)
+            )
+            Spacer(modifier = modifier.height(40.dp))
+        }
+    }
+}
+
+
 @Preview
 @Composable
 fun PreviewDifficultyScreen(){
     MaterialTheme {
         MachineStrikeTheme {
-            DifficultyScreen(navController = rememberNavController(),
+            DifficultyScreen(
+                navController = rememberNavController(),
                 options = DataSource.difficultyScreenOptions,
-                onClick =  { },
-                modifier = Modifier)
+//                backStackEntry = null,
+                modifier = Modifier,
+                viewModel = null,
+            )
         }
     }
 }

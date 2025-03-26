@@ -1,6 +1,11 @@
 package com.example.machinestrike.data.Pieces
 
-import java.lang.Boolean.TRUE
+import androidx.compose.ui.graphics.Color
+import com.example.machinestrike.ui.theme.CommonGreen
+import com.example.machinestrike.ui.theme.LegendaryGold
+import com.example.machinestrike.ui.theme.RarePurple
+import com.example.machinestrike.ui.theme.UncommonBlue
+
 
 //This needs to be an interface of functions and variables that all pieces share
 enum class Armor{
@@ -34,8 +39,22 @@ enum class Rarity {
     COMMON, UNCOMMON, RARE, LEGENDARY
 }
 
+fun getColorFromRarity(rarity: Rarity): Color {
+    return when (rarity) {
+        Rarity.COMMON -> CommonGreen
+        Rarity.UNCOMMON -> UncommonBlue
+        Rarity.RARE -> RarePurple
+        Rarity.LEGENDARY -> LegendaryGold
+    }
+}
+
+enum class MachineType{
+    DASH, GUNNER, MELEE, PULL, RAM, SWOOP
+}
+
 interface Piece {
 
+    var name: String
     var health: Int
     var baseDamage: Int
     var attackRange: Int
@@ -45,12 +64,13 @@ interface Piece {
     var victoryPoints: Int
     var skill: MachineSkill
     var rarity: Rarity
+    var machineType: MachineType
 
     var placed: Boolean
 
     //TODO FIGURE OUT IF IT NEEDS TO BE AN IMAGE OR BITMAP OR WHAT TO DRAW ON BOARD
 
-    //TODO figure out where each bit of logic goes
+    //TODO figure out where each bit of logic goes (in PLayer interface - implemented by  a human player and ai players...)
     //piece selected
     //check legal moves
     //display legal moves
@@ -72,8 +92,7 @@ interface Piece {
 
     //TODO on game start call set position to place
     fun setPosition(){
-
-        placed = TRUE
+//        placed = true
     }
 
     fun attack(){

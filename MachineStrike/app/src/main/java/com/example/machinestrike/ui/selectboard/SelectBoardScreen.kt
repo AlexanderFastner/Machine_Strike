@@ -18,19 +18,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.machinestrike.Destinations
 import com.example.machinestrike.data.DataSource
 import com.example.machinestrike.data.NavigationOption
 import com.example.machinestrike.data.SelectionButtons
+import com.example.machinestrike.ui.MachineStrikeViewModel
 import com.example.machinestrike.ui.navigation.NavigationButton
 import com.example.machinestrike.ui.navigation.SelectionButton
 import com.example.machinestrike.ui.theme.MachineStrikeTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import com.example.machinestrike.ui.navigation.NavigationButtonGroup
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +46,7 @@ fun SelectBoardScreen(
     options: List<SelectionButtons>,
     navigationOptions: List<NavigationOption>,
     modifier: Modifier = Modifier,
+    viewModel: MachineStrikeViewModel?
 ){
     Scaffold (
         topBar = {
@@ -63,12 +71,23 @@ fun SelectBoardScreen(
             //TODO
             //add image of selected board
 
-            BoardSelection(
-                navController,
-                options,
-                navigationOptions,
-                modifier
-            )
+            if (viewModel != null) {
+                BoardSelection(
+                    navController,
+                    options,
+                    navigationOptions,
+                    modifier,
+                    viewModel
+                )
+            }
+            else{
+                DummyBoardSelection(
+                    navController,
+                    options,
+                    navigationOptions,
+                    modifier
+                )
+            }
         }
     }
 }
@@ -79,6 +98,7 @@ fun BoardSelection (
     options: List<SelectionButtons>,
     navigationOptions: List<NavigationOption>,
     modifier: Modifier = Modifier,
+    viewModel: MachineStrikeViewModel
 ){
     Box(
         modifier = Modifier.fillMaxSize()
@@ -94,17 +114,70 @@ fun BoardSelection (
             //TODO change gameRepository settings
             //also need to add this for difficulty + piece selection
 
+            Spacer(modifier = Modifier.height(150.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                var selectedOption by remember { mutableStateOf("") }
+                options.forEach { item ->
+                    NavigationButtonGroup(
+                        onClick = {
+                            selectedOption = item.label
+                            viewModel.setBoard(item.label)
+                            Log.d("Button clicked", item.label)
+                            Log.d("Viewmodel Updated", viewModel.uiState.value.board)},
+                        selected = selectedOption == item.label,
+                        text = item.label,
+                        modifier = Modifier.size(240.dp, 60.dp)
+                    )
+                    Spacer(modifier = modifier.height(40.dp))
+                }
+            }
+        }
+        navigationOptions.forEach { item ->
+            NavigationButton(
+                onClick = {
+                    navController.navigate(item.destination)
+                    Log.d("Button clicked", item.label)},
+                text = item.label,
+                modifier = Modifier
+                    .size(160.dp, 60.dp)
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 8.dp, bottom = 8.dp)
+            )
+        }
+    }
+}
 
-            //TODO MAKE THE SELECTED OPTION HIGHLIGHT!
+
+//TODO REMEMBER TO KEEP UP TO DATE
+@Composable
+fun DummyBoardSelection (
+    navController: NavController,
+    options: List<SelectionButtons>,
+    navigationOptions: List<NavigationOption>,
+    modifier: Modifier = Modifier,
+){
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(50.dp))
+            var selectedOption by remember { mutableStateOf("") }
+
             Spacer(modifier = Modifier.height(150.dp))
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 options.forEach { item ->
-                    NavigationButton(
+                    NavigationButtonGroup(
                         onClick = {
-                            //TODO MAKE THIS ADD TO UI STATE
+                            selectedOption = item.label
                             Log.d("Button clicked", item.label)},
+                        selected = selectedOption == item.label,
                         text = item.label,
                         modifier = Modifier.size(240.dp, 60.dp)
                     )
@@ -136,7 +209,8 @@ fun PreviewSelectBoardScreen(){
                 navController = rememberNavController(),
                 options = DataSource.selectBoardScreenOptions,
                 navigationOptions = DataSource.BoardSelectSceenNext,
-                modifier = Modifier
+                modifier = Modifier,
+                viewModel = null
             )
         }
     }
